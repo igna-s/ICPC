@@ -300,7 +300,7 @@ int main() {
     return 0;
 }
 
-
+// Hecho con ayuda
 //I - Array Division
 
 #include <bits/stdc++.h>
