@@ -303,7 +303,6 @@ int main() {
 
 //I - Array Division
 
-//Lo hizo charly, no tenia ni idea de como codearlo
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -328,9 +327,7 @@ bool esPosible(const vector<long long>& arr, int k, long long limite) {
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-
+  
     int n, k;
     cin >> n >> k;
 
