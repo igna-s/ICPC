@@ -3,7 +3,7 @@
 ///https://codeforces.com/group/roU9OApnmM/contest/519743/my
 
 
-/*
+
 //A - Watermelon
 
 #include <bits/stdc++.h>
@@ -216,7 +216,7 @@ int main() {
     return 0;
 }
 
-*/
+
 //I. Cut Ribbon
 
 #include <bits/stdc++.h>
