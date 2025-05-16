@@ -155,3 +155,53 @@ int main() {
     return 0;
 }
 
+
+
+//D - The Lakes
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+long long bfs(int i, int j, int n, int m, vector<vector<bool>> &vis, vector<vector<int>> &a) {
+
+    //Chequea si no se fue al carajo, si es 0 0 si ya pase
+    if (i < 0 || i >= n || j < 0 || j >= m || vis[i][j] || a[i][j] == 0)
+        return 0;
+
+    vis[i][j] = true;
+
+    long long sum = a[i][j];
+    sum += bfs(i - 1, j, n, m, vis, a);
+    sum += bfs(i + 1, j, n, m, vis, a);
+    sum += bfs(i, j - 1, n, m, vis, a);
+    sum += bfs(i, j + 1, n, m, vis, a);
+    return sum;
+}
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n, m;
+        cin >> n >> m;
+        vector<vector<int>> a(n, vector<int>(m));
+        vector<vector<bool>> vis(n, vector<bool>(m, false));
+
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < m; j++)
+                cin >> a[i][j];
+
+        long long maxi = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (a[i][j] > 0 && !vis[i][j]) {
+                    maxi = max(maxi, bfs(i, j, n, m, vis, a));
+                }
+            }
+        }
+        cout << maxi << "\n";
+    }
+    return 0;
+}
+
