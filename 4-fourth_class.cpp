@@ -98,52 +98,53 @@ int main() {
 
 
 
-//B - Copil Copac Draws Trees  (Wrong)
-
+//B - Copil Copac Draws Trees  (Corrected)
 #include <bits/stdc++.h>
 using namespace std;
+using pii = pair<int,int>;
 
+const int MAXN = 200000 + 5;
+vector<pii> g[MAXN];
+int ans;
 
-int main()
-{
-
-    int t;
-    cin >>t;
-
-    while (t--){
-            int n;
-            cin >> n;
-            vector <vector<int>> g(n);
-            for(int i=0; i<(n-1); i++){
-                int a, b; cin >> a >> b;
-                --a ; --b ;
-                g[a].push_back(b);
-
-
-            }
-
-            vector <int> dist(n,-1), prev(n,-1);
-            queue <int> q;
-            vector <bool> visto(n,false);
-
-            q.push(0);
-            dist[0]=0;
-            visto[0]=true;
-            int maxi=-1;
-            while(q.size()>0){
-                int v=q.front(); q.pop();
-                for(auto u : g[v]) if(!visto[u]){
-                    q.push(u); visto[u]=true;
-                    dist[u]=dist[v]+1;
-                    prev[u]=v;
-                    if (dist[u]>maxi) maxi=dist[u];
-
-                }
-            }
-
-            cout << (maxi -1) << "\n";
-
+void dfs(int u, int p, int prev_idx, int reads){
+    ans = max(ans, reads);
+    for (const pii &edge : g[u]) {
+        int v   = edge.first;
+        int idx = edge.second;
+        if (v == p) continue;
+        int new_reads = reads + (idx < prev_idx ? 1 : 0);
+        dfs(v, u, idx, new_reads);
     }
+}
+
+
+int main(){
+
+    int T;
+    cin >> T;
+    while(T--){
+        int n;
+        cin >> n;
+
+        for(int i = 1; i <= n; i++) g[i].clear();
+
+
+        for(int i = 1; i < n; i++){
+            int u, v;
+            cin >> u >> v;
+            g[u].emplace_back(v, i);
+            g[v].emplace_back(u, i);
+        }
+
+        ans = 1;
+
+        dfs(1, 0, 0, 1);
+
+
+        cout << ans << "\n";
+    }
+
     return 0;
 }
 
