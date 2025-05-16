@@ -205,3 +205,53 @@ int main() {
     return 0;
 }
 
+
+
+// E - Cyclic Components
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAXN = 2e5 + 5;
+vector<bool> visto(MAXN, false);
+
+void dfs(int v, vector<vector<int>> &g, bool &es_ciclo) {
+    visto[v] = true;
+    if (g[v].size() != 2) {
+        es_ciclo = false;
+    }
+    for (auto u : g[v]) {
+        if (!visto[u]) {
+            dfs(u, g, es_ciclo);
+        }
+    }
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+
+    vector<vector<int>> g(n);
+    for (int i = 0; i < m; i++) {
+        int a, b;
+        cin >> a >> b;
+        --a; --b;
+        g[a].push_back(b);
+        g[b].push_back(a);
+    }
+
+    long long cont = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (!visto[i]) {
+            bool es_ciclo = true;
+            dfs(i, g, es_ciclo);
+            if (es_ciclo) cont++;
+        }
+    }
+
+    cout << cont << "\n";
+    return 0;
+}
+
