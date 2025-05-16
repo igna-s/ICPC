@@ -98,58 +98,47 @@ int main() {
 
 
 
-//B - Copil Copac Draws Trees  (Corrected)
+//B - Copil Copac Draws Trees  (Made by the teacher)
 #include <bits/stdc++.h>
+ 
 using namespace std;
-using pii = pair<int,int>;
-
-const int MAXN = 200000 + 5;
-vector<pii> g[MAXN];
-int ans;
-
-void dfs(int u, int p, int prev_idx, int reads){
-    ans = max(ans, reads);
-    for (const pii &edge : g[u]) {
-        int v   = edge.first;
-        int idx = edge.second;
-        if (v == p) continue;
-        int new_reads = reads + (idx < prev_idx ? 1 : 0);
-        dfs(v, u, idx, new_reads);
+ 
+#define FIN ios::sync_with_stdio(0);cout.tie(0);cin.tie(0)
+const int INF = 1e9+7;
+ 
+void DFS(int cur, vector<vector<pair<int,int>>> &g, vector<int> &ans, int prev = -1, int time = INF) {
+    for(auto [next,id] : g[cur]) {
+	if(next == prev) continue;
+	if(id > time) {
+	    ans[next] = ans[cur];
+	} else {
+	    ans[next] = ans[cur]+1;
+	}
+	DFS(next,g,ans,cur,id);
     }
+    
+    return;
 }
-
-
-int main(){
-
-    int T;
-    cin >> T;
-    while(T--){
-        int n;
-        cin >> n;
-
-        for(int i = 1; i <= n; i++) g[i].clear();
-
-
-        for(int i = 1; i < n; i++){
-            int u, v;
-            cin >> u >> v;
-            g[u].emplace_back(v, i);
-            g[v].emplace_back(u, i);
-        }
-
-        ans = 1;
-
-        dfs(1, 0, 0, 1);
-
-
-        cout << ans << "\n";
+ 
+int main() {
+    FIN;
+    int t; cin >> t;
+    while(t--) {
+	int n; cin >> n;
+	vector <vector<pair<int,int>>> g(n);
+	for(int i = 0; i < n-1; i++) {
+	    int x, y;
+	    cin >> x >> y; x--; y--;
+	    g[x].push_back({y,i});
+	    g[y].push_back({x,i});
+	}
+	vector <int> ans(n,0);
+	DFS(0,g,ans);
+	cout << *max_element(ans.begin(),ans.end()) << "\n";
     }
-
+    		
     return 0;
 }
-
-
-
 
 
 
