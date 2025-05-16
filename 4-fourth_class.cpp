@@ -338,3 +338,53 @@ int main()
     for(int i=1; i<cont; i++) cout << vertices[0]+1 << " " << vertices[i]+1 << "\n";
     return 0;
 }
+
+
+//H - Pipshas
+
+#include <bits/stdc++.h>
+using namespace std;
+
+static const int MOD = 1000000007;
+
+int dfs(int v, const vector<vector<int>> &g, vector<bool> &visto) {
+    visto[v] = true;
+    int gustos = 1;
+    for (int u : g[v]) {
+        if (!visto[u]) {
+            gustos += dfs(u, g, visto);
+        }
+    }
+    return gustos;
+}
+
+int main() {
+
+
+    int n, m;
+    cin >> n >> m;
+
+    vector<vector<int>> g(n);
+    for (int i = 0; i < m; i++) {
+        int a, b;
+        cin >> a >> b;
+        --a; --b;
+        g[a].push_back(b);
+        g[b].push_back(a);
+    }
+
+    vector<bool> visto(n, false);
+    long long result = 1;
+
+
+    for (int i = 0; i < n; i++) {
+        if (!visto[i]) {
+            int gustos = dfs(i, g, visto);
+            result = result * gustos % MOD;
+        }
+    }
+
+    cout << result << "\n";
+    return 0;
+}
+
