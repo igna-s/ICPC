@@ -93,3 +93,65 @@ int main() {
 		
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//C - Rumor
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAXN = 1e5 + 5;
+vector<bool> visto(MAXN, false);
+
+void dfs(int v, vector<vector<int>> &g, vector<long long> &soborno, long long &maxi) {
+    maxi = min(maxi, soborno[v]);
+    visto[v] = true;
+    for (auto u : g[v]) {
+        if (!visto[u]) {
+            dfs(u, g, soborno, maxi);
+        }
+    }
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<long long> soborno(n);
+    for (int i = 0; i < n; i++) {
+        cin >> soborno[i];
+    }
+
+    vector<vector<int>> g(n);
+    for (int i = 0; i < m; i++) {
+        int a, b;
+        cin >> a >> b;
+        a--; b--;
+        g[a].push_back(b);
+        g[b].push_back(a);
+    }
+
+    long long cont = 0;
+    for (int i = 0; i < n; i++) {
+        if (!visto[i]) {
+            long long maxi = soborno[i];
+            dfs(i, g, soborno, maxi);
+            cont += maxi;
+        }
+    }
+
+    cout << cont << "\n";
+    return 0;
+}
+
