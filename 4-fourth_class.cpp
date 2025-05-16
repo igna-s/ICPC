@@ -98,8 +98,54 @@ int main() {
 
 
 
+//B - Copil Copac Draws Trees  (Wrong)
+
+#include <bits/stdc++.h>
+using namespace std;
 
 
+int main()
+{
+
+    int t;
+    cin >>t;
+
+    while (t--){
+            int n;
+            cin >> n;
+            vector <vector<int>> g(n);
+            for(int i=0; i<(n-1); i++){
+                int a, b; cin >> a >> b;
+                --a ; --b ;
+                g[a].push_back(b);
+
+
+            }
+
+            vector <int> dist(n,-1), prev(n,-1);
+            queue <int> q;
+            vector <bool> visto(n,false);
+
+            q.push(0);
+            dist[0]=0;
+            visto[0]=true;
+            int maxi=-1;
+            while(q.size()>0){
+                int v=q.front(); q.pop();
+                for(auto u : g[v]) if(!visto[u]){
+                    q.push(u); visto[u]=true;
+                    dist[u]=dist[v]+1;
+                    prev[u]=v;
+                    if (dist[u]>maxi) maxi=dist[u];
+
+                }
+            }
+
+            cout << (maxi -1) << "\n";
+
+    }
+    return 0;
+}
 
 
 
