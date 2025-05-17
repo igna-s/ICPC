@@ -140,6 +140,57 @@ int main() {
 
 // C - Coin Combinations I - CSES
 
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef long long ll;
+typedef vector<ll> vl;
+typedef vector<vl> vll;
+typedef vector<bool> vb;
+
+#define FIO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0)
+#define forr(i, a, b) for(ll i = (a); i < (b); i++)
+#define forn(i, n) forr(i, 0, n)
+#define SZ(x) int((x).size())
+#define pb push_back
+#define mp make_pair
+#define all(c) (c).begin(), (c).end()
+#define esta(x, c) ((c).find(x) != (c).end())
+
+#define DBG(x) cerr << #x << " = " << (x) << endl
+#define RAYA cerr << "====================" << endl
+#define DBGV(v) forn(_, SZ(v)) cerr << v[_] << " "; cerr << endl
+
+const ll INF = 1LL << 60;
+const ll MOD = 1e9 + 7;
+const ll MAXN = 250 * 501;
+
+
+
+
+
+int main() {
+    FIO;
+    ll n, x;
+    cin >> n >> x;
+
+    vl moneda(n);
+    forn(i, n) cin >> moneda[i];
+
+    vl dp(x + 1, 0);
+    dp[0] = 1;
+
+    forr(i, 1, x + 1) {
+        forn(j, n) {
+            if (i - moneda[j] >= 0) {
+                dp[i] = (dp[i] + dp[i - moneda[j]]) % MOD;
+            }
+        }
+    }
+
+    cout << dp[x] << '\n';
+    return 0;
+}
 
 
 
