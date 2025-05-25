@@ -403,3 +403,492 @@ int main() {
     cout << cont -1 << "\n";
     return 0;
 }
+
+
+
+
+
+
+
+//Teacher solutions (Monazo)
+
+
+// (A) Analysing Electrocardiograms
+
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define FIN ios::sync_with_stdio(0);cout.tie(0);cin.tie(0)
+
+int main() {
+	FIN;
+	string s;
+	cin >> s;
+	int tam = int(s.size());
+	int n; cin >> n;
+	for(int _ = 0; _ < n; _++) {
+		string t; cin >> t;
+		bool ans = true;
+		for(int i = 0; i < t.size(); i++) {
+			if(t[i] != s[i%tam]) ans = false;
+		}
+		int tam2 = int(t.size());
+		if(tam2 % tam != 0) ans = false;
+		if(ans) cout << "Yes\n";
+		else cout << "No\n";
+	}
+	
+	
+	return 0;
+}
+
+
+
+// (B) Buying Paint
+
+
+#include <bits/stdc++.h>
+ 
+using namespace std;
+ 
+typedef long long ll;
+#define FIN ios::sync_with_stdio(0);cout.tie(0);cin.tie(0)
+#define forr(i,a,b) for(int i = int(a); i < int(b); i++)
+#define forn(i,n) forr(i,0,n)
+ 
+const int INF = 1e9+7;
+ 
+vector <pair<int,int>> moves = {{-1,0},{0,1},{1,0},{0,-1}};
+ 
+bool valid(int x, int y, int n, vector<vector<int>> &v) {
+	if(x < 0 or x >= n) return false;
+	if(y < 0 or y >= n) return false;
+	if(v[x][y] == INF) return false;
+	return true;
+}
+ 
+ll getSpiral(vector<vector<int>> &v, int n, int x, int y, ll sum = 0, int move = 0) {
+	sum += v[x][y];
+	v[x][y] = INF;
+	if(sum < 0) sum = 0;
+	ll ans = 0;
+	int newx = x + moves[move].first;
+	int newy = y + moves[move].second;
+	int cont = 0;
+	while(!valid(newx,newy,n,v) and cont < 4) {
+		cont++;
+		move++;
+		move %= 4;
+		newx = x + moves[move].first;
+		newy = y + moves[move].second;
+	}
+	if(cont == 4) return sum;
+	return max(sum,getSpiral(v,n,newx,newy,sum,move));
+}
+ 
+int main() {
+	FIN;
+	
+	int n; cin >> n;
+	vector <vector<int>> v(n,vector<int>(n));
+	forn(i,n) {
+		forn(j,n) {
+			cin >> v[i][j];
+		}
+	}
+	ll ans = 0;
+	vector<vector<int>> copia = v;
+	ans = max(ans,getSpiral(copia,n,0,0));
+	copia = v;
+	ans = max(ans,getSpiral(copia,n,0,n-1));
+	copia = v;
+	ans = max(ans,getSpiral(copia,n,n-1,n-1));
+	copia = v;
+	ans = max(ans,getSpiral(copia,n,n-1,0));
+	
+	for(int i = 0; i < n; i++) {
+		for(int j = 0; j < i; j++) {
+			swap(v[i][j],v[j][i]);
+		}
+	}
+	
+	copia = v;
+	ans = max(ans,getSpiral(copia,n,0,0));
+	copia = v;
+	ans = max(ans,getSpiral(copia,n,0,n-1));
+	copia = v;
+	ans = max(ans,getSpiral(copia,n,n-1,n-1));
+	copia = v;
+	ans = max(ans,getSpiral(copia,n,n-1,0));
+	
+	
+	
+	cout << ans << "\n";
+	return 0;
+}
+
+
+//(D) Delivering Orders
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+typedef long long ll;
+#define FIN ios::sync_with_stdio(0);cout.tie(0);cin.tie(0)
+
+int main() {
+	FIN;
+	
+	int k; cin >> k;
+	vector <ll> a(k);
+	for(int i = 0; i < k; i++) cin >> a[i];
+	int n; cin >> n;
+	vector <vector<ll>> v(n,vector<ll>(k));
+	vector <ll> acum(k);
+	for(int i = 0; i < n; i++) {
+		for(int j = 0; j < k; j++) {
+			cin >> v[i][j];
+			acum[j] += v[i][j];
+		}
+	}
+	
+	ll r = 1e18;
+	for(int i = 0; i < k; i++) {
+		if(acum[i] != 0) r = min(r,a[i]/acum[i]+1);
+		//~ cerr << (a[i]+acum[i]-1)/acum[i] << " ";
+	} 
+	
+	
+	for(int i = 0; i < n; i++) {
+		for(int j = 0; j < k; j++) {
+			a[j] -= (r-1) * v[i][j];
+		}
+	}
+	
+	for(int i = 0; i < n; i++) {
+		for(int j = 0; j < k; j++) {
+			a[j] -= v[i][j];
+			if(a[j] < 0) {
+				cout << r << " " << i+1 << "\n";
+				return 0;
+			}
+		}
+	}
+	
+	return 0;
+}
+
+
+//(E) Elisas Boxes
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define FIN ios::sync_with_stdio(0);cout.tie(0);cin.tie(0)
+
+int main() {
+	FIN;
+	
+	int n, m;
+	cin >> n >> m;
+	vector <int> v(n);
+	for(int i = 0; i < n; i++) {
+		cin >> v[i];
+	}
+	int pos = -1;
+	for(int i = 0; i < n; i++) {
+		if(v[i] >= m) {
+			pos = i+1;
+			break;
+		}
+	}
+	
+	cout << pos << "\n";
+	
+	return 0;
+}
+
+
+// (G) Generating Polygons
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+typedef long long ll;
+#define FIN ios::sync_with_stdio(0);cout.tie(0);cin.tie(0)
+#define forr(i,a,b) for(int i = int(a); i < int(b); i++)
+#define forn(i,n) forr(i,0,n)
+#define pb push_back
+#define all(c) (c).begin(),(c).end()
+
+typedef long double ld;
+
+void solve_problem() {
+	int n, A;
+	cin >> n >> A;
+	if(n - 2 > A * 2) {
+		cout << "No\n";
+		return;
+	}
+	vector <pair<int,int>> up, down;
+	cout << "Yes\n";
+	int x = 0;
+	int cont = 0;
+	while(n > 2) {
+		n -= 2;
+		//~ cout << x << " " << 0+cont%2 << "\n";
+		//~ cout << x << " " << 1+cont%2 << "\n";
+		down.pb({x,cont%2});
+		up.pb({x,1+cont%2});
+		cont++;
+		x++;
+	}
+	A -= cont-1;
+	if(n == 2) {
+		down.pb({x+A-1,cont%2});
+		up.pb({x+A-1,1+cont%2});
+		//~ cout << x + A << " " << 0 << "\n";
+		//~ cout << x + A << " " << 1 << "\n";
+	} else {
+		down.pb({x+2*A-1,cont%2});
+	}
+	for(int i = 0; i < down.size(); i++) {
+		cout << down[i].first << " " << down[i].second << "\n";
+	}
+	reverse(all(up));
+	for(int i = 0; i < up.size(); i++) {
+		cout << up[i].first << " " << up[i].second << "\n";
+	}
+}
+
+int main() {
+	FIN;
+	
+	int t; cin >> t;
+	while(t--) {
+		solve_problem();
+	}
+	
+	return 0;
+}
+
+
+//(H) Huron Designs
+
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+typedef long long ll;
+#define FIN ios::sync_with_stdio(0);cout.tie(0);cin.tie(0)
+#define forr(i,a,b) for(int i = int(a); i < int(b); i++)
+#define forn(i,n) forr(i,0,n)
+#define pb push_back
+#define all(c) (c).begin(),(c).end()
+
+typedef long double ld;
+
+struct task {
+	ll d, p, c, lx, rx, ly, ry;
+};
+
+bool bit(int i, int mask) {
+	return mask&(1<<i);
+}
+
+int main() {
+	FIN;
+	
+	int n; cin >> n;
+	vector <task> v(n);
+	forn(i,n) {
+		cin >> v[i].d >> v[i].p >> v[i].c >> v[i].lx >> v[i].rx >> v[i].ly >> v[i].ry;
+	}
+	vector <ld> dp(1<<n,0);
+	ld ans = 0.0;
+	for(int mask = 1; mask < (1<<n); mask++) {
+		vector <int> todos;
+		ll cTotal = 0;
+		forn(i,n) {
+			if(bit(i,mask)) {
+				todos.pb(i);
+				cTotal += v[i].c;
+			}
+		}
+		for(int i : todos) {
+			// ultimo que hago es i
+			// suma p si cTotal <= d
+			// si cTotal <= ly (suma bonus)
+			// si cTotal > ry (no suma bonus)
+			// else suma (ry - cTotal) * bonus
+			ld bonus = ((ld)v[i].lx + v[i].rx)/2;
+			ld profit = (cTotal <= v[i].d) ? (ld)v[i].p : (ld)0;
+			if(cTotal > v[i].d) continue;
+			ld factorBonus = 0;
+			if(cTotal <= v[i].ly) factorBonus = 1.0;
+			else if(cTotal > v[i].ry) factorBonus = 0.0;
+			else factorBonus = ((ld)v[i].ry-cTotal)/(v[i].ry-v[i].ly);
+			dp[mask] = max(dp[mask],dp[mask^(1<<i)] + profit + bonus * factorBonus);
+		}
+		ans = max(ans,dp[mask]);
+	}
+	cout << fixed << setprecision(10);
+	cout << ans << "\n";
+	
+	
+	return 0;
+}
+
+//(I) ICPC Challenge
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+typedef long long ll;
+#define FIN ios::sync_with_stdio(0);cout.tie(0);cin.tie(0)
+#define forr(i,a,b) for(int i = int(a); i < int(b); i++)
+#define forn(i,n) forr(i,0,n)
+#define pb push_back
+#define all(c) (c).begin(),(c).end()
+
+const int INF = 1e9+7;
+
+void DFS(int cur, vector<vector<int>> &g, vector<int> &in, vector<int> &out, vector <int> &r, int p = -1) {
+	in[cur] = r.size();
+	r.pb(cur);
+	for(int next : g[cur]) {
+		if(next != p) DFS(next,g,in,out,r,cur);
+	}
+	out[cur] = r.size();
+}
+
+int main() {
+	FIN;
+	
+	int n, q;
+	cin >> n >> q;
+	vector <int> v(n);
+	map <int,vector<int>> mapa;
+	for(int i = 0; i < n; i++) {
+		cin >> v[i];
+	}
+	vector <vector<int>> g(n);
+	forn(i,n-1) {
+		int x, y;
+		cin >> x >> y;
+		x--; y--;
+		g[x].pb(y);
+		g[y].pb(x);
+	}
+	vector <int> in(n), out(n), r;
+	DFS(0,g,in,out,r);
+	//~ forn(i,n) cerr << i << " "; cerr << endl;
+	//~ for(int u : r) cerr << u << " "; cerr << endl;
+	//~ for(int u : r) cerr << v[u] << " "; cerr << endl;
+	
+	forn(i,n) {
+		mapa[v[r[i]]].pb(i);
+	}
+	
+	forn(i,q) {
+		int x, k;
+		cin >> x >> k;
+		x--;
+		//~ cerr << in[x] << " " << out[x] << "\n";
+		vector <int> &aux = mapa[k];
+		cout << lower_bound(all(aux),out[x]) - lower_bound(all(aux),in[x]) << "\n";
+	}
+	
+	
+	return 0;
+}
+
+
+//(J) JuPaels Palindrome
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+typedef int ll;
+#define FIN ios::sync_with_stdio(0);cout.tie(0);cin.tie(0)
+#define esta(x,c) (c).find(x) != (c).end()
+#define forr(i,a,b) for(int i = int(a); i < int(b); i++)
+#define forn(i,n) forr(i,0,n)
+#define pb push_back
+#define all(c) (c).begin(),(c).end()
+
+int solve(vector <pair<int,int>> &p, vector <pair<int,int>> &s) {
+	int pos = 0;
+	int ans = 0;
+	for(auto [h,id] : p) {
+		while(pos < s.size() and s[pos].first <= h) {
+			if(s[pos].first == h) {
+				ans = max(ans,abs(s[pos].second-id));
+			}
+			pos++;
+		}
+	}
+	return ans;
+}
+
+int main() {
+	FIN;
+	
+	int n; cin >> n;
+	string pal; cin >> pal;
+	vector <int> v(n);
+	forn(i,n) v[i] = pal[i]-'a';
+	
+	int hash = 0, hash_final = 0;
+	vector <pair<int,int>> prefix;
+	prefix.pb({0,-1});
+	forn(i,n) {
+		int u = v[i];
+		hash = hash ^ (1<<u);
+		prefix.pb({hash,i});
+	}
+	hash_final = hash;
+	hash = 0;
+	vector <pair<int,int>> suffix;
+	suffix.pb({0,n});
+	for(int i = n-1; i >= 0; i--) {
+		int u = v[i];
+		hash = hash ^ (1<<u);
+		suffix.pb({hash,i});
+	}
+	
+	sort(all(prefix));
+	//~ sort(all(suffix));
+	int ans = solve(prefix,prefix);
+	forn(bit,26) {
+		vector <pair<int,int>> l, r;
+		for(auto [h,id] : prefix) {
+			if(h & (1<<bit)) {
+				r.pb({h^(1<<bit),id});
+			} else {
+				l.pb({h^(1<<bit),id});
+			}
+		}
+		//~ for(auto [u,id] : l) cerr << u << " "; cerr << endl;
+		//~ for(auto [u,id] : r) cerr << u << " "; cerr << endl;
+		//~ cerr << solve(l,prefix) << endl;
+		//~ cerr << "==================" << endl;
+		ans = max(ans,solve(l,prefix));
+		ans = max(ans,solve(r,prefix));
+		
+	}
+	cout << ans << "\n";
+	
+	
+	
+	return 0;
+}
+
