@@ -46,10 +46,39 @@ Espacio: O(4 n) normalmente.
 
 
 
-
+Note: Some of the exercises were made by the teacher
 */
 
-l
+//Static Range Sum Queries (Prefix Sum)
+
+#include <bits/stdc++.h>
+using namespace std;
+#define FIN ios::sync_with_stdio(0);cin.tie(0);cout.tie(0)
+ 
+const long long NEUTRO = 0;
+long long op(long long a, long long b){ return a + b; }
+ 
+struct PrefixSum {
+    int n;
+    vector<long long> ps;
+    PrefixSum(const vector<long long>& a): n(a.size()), ps(n+1, NEUTRO) {
+        for(int i = 0; i < n; i++) ps[i+1] = op(ps[i], a[i]);
+    }
+    long long query(int l, int r) { return ps[r+1] - ps[l]; }
+};
+ 
+int main(){
+    FIN;
+    int n, q; cin >> n >> q;
+    vector<long long> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+    PrefixSum ps(a);
+    while(q--){
+        int l, r; cin >> l >> r; l--, r--;
+        cout << ps.query(l, r) << "\n";
+    }
+    return 0;
+}
 
 
 
