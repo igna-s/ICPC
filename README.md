@@ -20,3 +20,20 @@ Welcome to the **ICPC Problems Repository**! This collection contains solutions 
 
 5. **💡 And much more...**  
  
+
+
+
+---
+
+## 🎯 **Goal**
+Learn, explore, and **have fun** while practicing problem-solving with my team. 🎉      ✅Done 
+
+---
+
+## 👨‍💻 **Team**
+**[UNLP] CAR** *chori, albahaca y rúcula*  
+
+---
+
+## 🏁 **Final Result**
+**37th place nationwide 🇦🇷** 🎖️
