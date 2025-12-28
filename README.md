@@ -37,3 +37,5 @@ Learn, explore, and **have fun** while practicing problem-solving with my team. 
 
 ## 🏁 **Final Result**
 **37th place nationwide 🇦🇷** 🎖️
+**147th place in the region 🇦🇷** 🎖️
+
